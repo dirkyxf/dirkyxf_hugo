@@ -328,7 +328,11 @@ declare global {
 
 window.addEventListener('load', () => {
     setTimeout(function () {
-        const searchForm = document.querySelector('.search-form') as HTMLFormElement,
+        /* 取带 data-json 的那个表单——它才持有搜索索引地址。
+           侧栏的搜索小组件同样是 .search-form（纯 GET 跳转，不带 data-json），
+           且它在 DOM 里排在正文之前；若用 querySelector('.search-form')
+           就会选中侧栏表单，fetch(undefined) 直接 404，搜索结果永远为空。 */
+        const searchForm = (document.querySelector('.search-form[data-json]') || document.querySelector('.search-form')) as HTMLFormElement,
             searchInput = searchForm?.querySelector('input') as HTMLInputElement,
             searchResultList = document.querySelector('.search-result--list') as HTMLDivElement,
             searchResultTitle = document.querySelector('.search-result--title') as HTMLHeadingElement;

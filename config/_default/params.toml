@@ -19,7 +19,6 @@ SortBy              = "default"
 
 [sidebar]
     emoji    = "🍥"
-    subtitle = " "
     avatar   = "img/avatar.png"
 
 [article]

@@ -75,6 +75,108 @@
     }
 }
 
+/* 归档页：年份 / 月份折叠块（原生 <details>/<summary>，无需 JS 即可展开收起）。
+   图标放在文字左侧组成树状层级：▸ 2026 → ▸ 10月 → 文章列表。
+   默认全部收起，页面上只占两行年份，按需点开。 */
+.archives-group > summary,
+.archives-month > summary {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-left: calc(var(--spacing-xs) * -1); /* 抵消图标占位，标题文字与正文对齐 */
+    padding: var(--spacing-xs) var(--spacing-xs);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    border-radius: var(--card-border-radius);
+
+    /* 隐藏原生三角（Firefox / Safari） */
+    &::-webkit-details-marker {
+        display: none;
+    }
+
+    h2,
+    h3 {
+        margin-bottom: 0;
+    }
+
+    .icon {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        transition: transform 0.15s ease;
+    }
+
+    /* 键盘可达性：焦点环清晰可见 */
+    &:focus-visible {
+        outline: 2px solid var(--accent-color);
+        outline-offset: 2px;
+    }
+
+    /* 悬停只加深背景，不改文字颜色 */
+    &:hover {
+        background-color: var(--card-background-selected);
+    }
+}
+
+/* 展开时 chevron-right 旋转 90° 变为向下 */
+.archives-group[open] > summary .icon,
+.archives-month[open] > summary .icon {
+    transform: rotate(90deg);
+}
+
+/* 归档页两级折叠标题的字号档位。
+   年份（顶层）比月份大一档，月份（下级）小一档并降透明度弱化，形成明确层级。
+   两处都必须显式指定：主题给 h2、h3 都挂了 .section-title，字号一律 1.6rem，
+   不写就会两级一样大。按主题常用档位（1.4 / 1.6 / 1.8 / 2 …）各调一档：
+   年份 1.6rem → 1.8rem，月份 1.8rem → 1.6rem。 */
+.archives-group > summary h2 {
+    font-size: 1.8rem;
+}
+
+/* 月份块：缩进一级 */
+.archives-month {
+    margin: var(--spacing-sm) 0 0 calc(var(--spacing-sm) + 16px);
+
+    > summary h3 {
+        font-size: 1.6rem;
+        opacity: 0.75;
+    }
+
+    /* 最后一个月份与下一个年份之间留出间距 */
+    &:last-child {
+        margin-bottom: var(--spacing-lg);
+    }
+}
+
+/* 归档页：文章列表（月份折叠块内的白色卡片）整体收窄。
+   .article-list--compact 自身就是那张带分隔线的卡片（@include card-style），
+   所以直接约束它的宽度即可让每个月里的文章一起变窄。
+   用 body 上的 template-archives 限定作用范围——
+   搜索页、文章内链接列表等其他 .article-list--compact 用例不受影响。 */
+.template-archives .article-list--compact {
+    max-width: 720px;
+}
+
+/* 归档页：压每月列表里每条文章的上下行高。
+   主题给条目设了 padding: 25px（≥768px 四边），又给 .article-details 设了
+   min-height: var(--article-compact-image-size)（≥768px 为 60px）——
+   那 60px 是为右侧 60×60 缩略图预留的高度，而归档里的文章没有配图，
+   于是每行被撑到 25 + 60 + 25 ≈ 110px。这里收掉这两处：
+   padding 只压上下（左右沿用主题原值，不动卡片内部左右留白），
+   min-height 归零后高度交给标题 + 日期自身的内容决定。
+   若某篇文章将来配上缩略图，行高会自动回到 max(内容, 60px)，不会破版。 */
+.template-archives .article-list--compact article {
+    > a {
+        padding-block: var(--spacing-sm); /* 上下 25px → 10px */
+    }
+
+    .article-details {
+        min-height: 0;
+        gap: var(--spacing-xs); /* 标题与日期间距 10px → 5px */
+    }
+}
+
 /* 主页 / 归档（#main-menu 的两个主菜单项）：由上下堆叠改为同一行。
    主题把该菜单设为列方向，且 li 为 width:100%（整行占满），
    所以需同时放开 li 宽度，并把图标与文字间距从 40px 收到 15px——

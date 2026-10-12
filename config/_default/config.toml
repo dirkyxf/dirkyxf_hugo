@@ -14,5 +14,9 @@ hasCJKLanguage = true
 # Change it to your Disqus shortname before using
 disqusShortname = "dirkyxf"
 
+# 只保留 tags 分类法，移除 categories（显式定义会覆盖默认的 category+tag）
+[taxonomies]
+    tag = "tags"
+
 [pagination]
     pagerSize = 5
