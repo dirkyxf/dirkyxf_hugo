@@ -1,10 +1,5 @@
 {{ define "body-class" }}home-layout{{ end }}
 
-{{ define "left-sidebar" }}
-    {{ .Scratch.Set "showHomepageWidgets" true }}
-    {{ partial "sidebar/left.html" . }}
-{{ end }}
-
 {{ define "main" }}
     {{- $paginator := partial "helper/paginator.html" . -}}
 

@@ -64,20 +64,9 @@
         {{ end }}
     </ol>
 
-    {{ if .Scratch.Get "showHomepageWidgets" }}
-        {{ partial "sidebar/widgets.html" (dict "Context" . "Scope" "homepage") }}
-    {{ end }}
+    {{ partial "sidebar/widgets.html" (dict "Context" . "Scope" "homepage") }}
 
     <ol class="menu sidebar-bottom-menu">
-        {{ with .Site.GetPage "/page/links" }}
-            <li {{ if eq $.RelPermalink .RelPermalink }}class="current"{{ end }}>
-                <a href="{{ .RelPermalink }}">
-                    {{ partial "helper/icon" "link" }}
-                    <span>{{ .Title }}</span>
-                </a>
-            </li>
-        {{ end }}
-
         {{- $currentLanguageCode := .Language.Name -}}
         {{ if hugo.IsMultilingual }}
             <li id="i18n-switch">
