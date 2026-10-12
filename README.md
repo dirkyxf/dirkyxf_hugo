@@ -31,16 +31,9 @@ In case you got lost during the setup process, here's a video tutorial that setu
 
 In case you don't want to use GitHub codespace, you can also run this template in your local machine. **You need to install Git, Go and Hugo extended locally.** For more information, check official Hugo documentation: https://gohugo.io/installation/
 
-## Update theme manually
+## Customize the theme
 
-Run:
-
-```bash
-hugo mod get -u github.com/CaiJimmy/hugo-theme-stack/v4
-hugo mod tidy
-```
-
-> This starter template has been configured with `v4` version of theme. Due to the limitation of Go module, once the `v4` or up version of theme is released, you need to update the theme manually. (Modifying `config/module.toml` file)
+The Stack theme source (v4.0.3) is included in the `theme` folder. Edit its files directly to customize the theme. Hugo is configured to load this local copy.
 
 ## Deploy to another static page hostings
 

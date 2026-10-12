@@ -1,0 +1,14 @@
+{{- $scope := default "homepage" .Scope -}}
+{{- $context := .Context -}}
+{{- with (index .Context.Site.Params.widgets $scope) -}}
+    <div class="sidebar-widgets">
+        {{ range . }}
+            {{ if templates.Exists (printf "_partials/widget/%s.html" .type) }}
+                {{- $params := default dict .params -}}
+                {{ partial (printf "widget/%s" .type) (dict "Context" $context "Params" $params) }}
+            {{ else }}
+                {{ warnf "Widget %s not found" .type }}
+            {{ end }}
+        {{ end }}
+    </div>
+{{ end }}

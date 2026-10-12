@@ -1,0 +1,14 @@
+{{ define "body-class" }}home-layout{{ end }}
+
+{{ define "main" }}
+    {{- $paginator := partial "helper/paginator.html" . -}}
+
+    <section class="article-list">
+        {{ range $index, $element := $paginator.Pages }}
+            {{ partial "article-list/default" . }}
+        {{ end }}
+    </section>
+
+    {{- partial "pagination.html" . -}}
+    {{- partial "footer/footer" . -}}
+{{ end }}

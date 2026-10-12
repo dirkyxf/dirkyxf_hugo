@@ -3,8 +3,6 @@ title: 个人Agent的简略发展路程
 description: 个人Agent的简略发展路程
 slug: personal-ai-agent
 date: 2026-10-02
-categories:
-  - AI Agent
 tags:
   - AI Agent
 weight: 1

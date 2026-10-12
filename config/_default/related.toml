@@ -3,7 +3,8 @@ includeNewer = true
 threshold    = 60
 toLower      = false
 
+# 站点已移除 categories 分类法（见 config.toml 的 [taxonomies]，只保留 tag），
+# 因此这里不再列 categories——该索引已永远取不到值。
 indices = [
     { name = "tags", weight = 100 },
-    { name = "categories", weight = 200 },
 ]

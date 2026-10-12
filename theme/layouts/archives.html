@@ -1,0 +1,38 @@
+{{ define "body-class" }}template-archives{{ end }}
+{{ define "main" }}
+    {{ $pages := partial "helper/pages.html" .Site.Home }}
+
+    {{ range $pages.GroupByDate "2006" }}
+    {{ $id := lower (replace .Key " " "-") }}
+    <details class="archives-group" id="{{ $id }}">
+        <summary class="archives-summary">
+            {{ partial "helper/icon" "chevron-right" }}
+            <h2 class="archives-date section-title">{{ .Key }}</h2>
+        </summary>
+        {{ range .Pages.GroupByDate "1月" }}
+        <details class="archives-month">
+            <summary class="archives-summary">
+                {{ partial "helper/icon" "chevron-right" }}
+                <h3 class="archives-month-title section-title">{{ .Key }}</h3>
+            </summary>
+            <div class="article-list--compact">
+                {{ range .Pages }}
+                    {{ partial "article-list/compact" . }}
+                {{ end }}
+            </div>
+        </details>
+        {{ end }}
+    </details>
+    {{ end }}
+
+    <script>
+        /* 支持锚点直达：#2026 之类的哈希自动展开对应折叠块 */
+        (function () {
+            if (!location.hash) return;
+            var el = document.getElementById(location.hash.slice(1));
+            if (el && el.tagName === 'DETAILS') el.open = true;
+        })();
+    </script>
+
+    {{ partialCached "footer/footer" . }}
+{{ end }}
