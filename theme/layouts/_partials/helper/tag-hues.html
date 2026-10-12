@@ -1,0 +1,29 @@
+{{/* 为站点每个标签分配色相，返回 dict[标签页 RelPermalink]色相。
+
+     前两版为什么不行：
+       ① hash % 8  —— 桶太少，7 个标签只落到 4 个色相上（"推理" 与 "推理经济学" 同色）。
+       ② 黄金角铺开 —— 色相确实唯一了，但 20 个标签平均间隔只有 18°，
+          实测 "MoE"(262°) 与 "推理经济学"(275°) 只差 13°，低彩度下根本看不出区别。
+
+     本版：12 格色环（每格 30°，保证任意两个不同色相都清晰可分），
+     第 i 个标签取第 (i × 5) mod 12 格——5 与 12 互质，所以
+       · 标签数 ≤ 12 时色相全部唯一；
+       · 排序上相邻的标签落在色环上相隔 5 格 = 150°，绝不会看起来雷同
+         （这一点很关键："推理" 与 "推理经济学" 这类同前缀标签在排序上就是相邻的）。
+     按 URL 作键 → 同一标签全站同色。用 partialCached 调用，每站点只算一次。 */}}
+{{- $palette := 12 -}}
+{{- $stride := 5 -}}
+{{- $step := div 360 $palette -}}
+
+{{- $links := slice -}}
+{{- range $term, $weighted := site.Taxonomies.tags -}}
+    {{- with $weighted.Page -}}
+        {{- $links = $links | append .RelPermalink -}}
+    {{- end -}}
+{{- end -}}
+
+{{- $map := dict -}}
+{{- range $i, $link := (sort $links) -}}
+    {{- $map = merge $map (dict $link (mul (mod (mul $i $stride) $palette) $step)) -}}
+{{- end -}}
+{{- return $map -}}

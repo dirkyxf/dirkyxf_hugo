@@ -205,3 +205,59 @@
     outline-offset: 2px;
     border-radius: var(--card-border-radius);
 }
+
+/* 列表卡片上的文章标签（article/components/details.html 里带 class="link"）：
+   a.link 自带一条 box-shadow 高亮下划线（--link-background-color: 189,195,199），
+   叠在深色标签块上会露出浅灰边，悬停时更会糊满整块。
+   标签在这里是"块"而不是行内链接，故取消这层高亮，
+   让它与文章页底部那排标签长得完全一致。 */
+.article-tags a.link,
+.article-tags a.link:hover {
+    box-shadow: none;
+}
+
+/* 首页卡片的标签移到标题正下方后，已不在 .article-meta 里，
+   于是失去 .article-meta > .inline-meta 提供的 align-items:center 与 15px 间距。
+   这里补回来：否则标签图标会被 flex 拉伸变形、间距也会缩到 10px。 */
+.article-title-wrapper .article-tags {
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+/* 文章标签块（首页卡片与文章页底部共用 .article-tags）：
+   1) 尺寸收紧——字号 1.4rem 先缩两号再放大一号（净 −0.2rem）= 1.2rem，
+      内边距 8px 16px → 4px 10px，图标 20/24px → 16px
+      （"号"沿用前面归档标题那次的口径：一号 = 0.2rem）；
+   2) 每个标签一个淡色底：色相由模板按标签名稳定写入 --tag-hue
+      （见 helper/tag-hue.html），同一标签全站同色、不同标签不同色。
+   浅色模式深字压淡底、深色模式反相，两种主题下对比度都远高于 4.5:1；
+   悬停只加深底色并把正文再压深一档，对比度不降。 */
+.article-tags {
+    .icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    a {
+        --tag-hue: 210; /* 兜底色相：模板未写入时使用 */
+        padding: 4px 10px;
+        font-size: 1.2rem;
+        background-color: oklch(0.9 0.08 var(--tag-hue));
+        color: oklch(0.42 0.13 var(--tag-hue));
+
+        &:hover {
+            background-color: oklch(0.84 0.1 var(--tag-hue));
+            color: oklch(0.35 0.14 var(--tag-hue));
+        }
+    }
+}
+
+[data-scheme="dark"] .article-tags a {
+    background-color: oklch(0.34 0.07 var(--tag-hue));
+    color: oklch(0.87 0.11 var(--tag-hue));
+
+    &:hover {
+        background-color: oklch(0.4 0.09 var(--tag-hue));
+        color: oklch(0.93 0.11 var(--tag-hue));
+    }
+}

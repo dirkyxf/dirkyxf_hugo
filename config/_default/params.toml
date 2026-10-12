@@ -25,6 +25,11 @@ SortBy              = "default"
     math          = false
     readingTime   = true
 
+    # 列表页（首页 article-list/default 卡片）显示文章标签。
+    # 主题默认 false 且本文件原先没有覆盖，所以卡片上一直看不到标签。
+    [article.list]
+        showTags = true
+
     [article.license]
         enabled = false
         default = "Licensed under CC BY-NC-SA 4.0"

@@ -1,7 +1,8 @@
+{{- $tagHues := partialCached "helper/tag-hues" site "tags" -}}
 {{ if .Params.Tags }}
     <section class="article-tags">
         {{ range (.GetTerms "tags") }}
-            <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+            <a href="{{ .RelPermalink }}" style="--tag-hue: {{ default 210 (index $tagHues .RelPermalink) }}">{{ .LinkTitle }}</a>
         {{ end }}
     </section>
 {{ end }}
