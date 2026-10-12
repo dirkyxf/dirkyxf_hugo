@@ -3,8 +3,6 @@ title: GitHub 每日精选项目（2026-10-06）
 description: 从 Reddit BestGitHubRepos 帖文整理的开源项目每日精选。
 slug: github-projects-2026-10-06
 date: 2026-10-06T15:00:00+08:00
-categories:
-  - GitHub
 tags:
   - GitHub
   - 开源项目

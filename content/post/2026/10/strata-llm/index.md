@@ -3,8 +3,6 @@ title: Strata跑Qwen3.8-Flash-Next
 description: null
 slug: strata跑qwen3-8-flash
 date: 2026-10-06
-categories:
-  - AI
 tags:
   - LocalLLM
 ---

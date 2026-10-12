@@ -196,3 +196,12 @@
         }
     }
 }
+
+/* 侧栏底部「暗色模式」开关：它是一个 <li role="button">，
+   主题没有给它任何焦点样式，键盘 Tab 上来时看不出焦点在哪。
+   这里补一个与归档折叠块一致的焦点环。 */
+#dark-mode-toggle:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+    border-radius: var(--card-border-radius);
+}

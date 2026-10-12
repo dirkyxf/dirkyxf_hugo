@@ -3,8 +3,6 @@ title: "GitHub 每日精选项目（2026-10-07）"
 description: "从 Reddit BestGitHubRepos 当日 RSS 帖文整理的开源项目精选。"
 slug: best-github-repos-2026-10-07
 date: 2026-10-07T10:06:00+08:00
-categories:
-  - GitHub
 tags:
   - GitHub
   - 开源项目

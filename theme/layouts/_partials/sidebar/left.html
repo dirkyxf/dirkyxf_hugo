@@ -86,7 +86,9 @@
         {{ end }}
 
         {{ if .Site.Params.colorScheme.toggle }}
-            <li id="dark-mode-toggle">
+            {{/* role/tabindex：这是一个 <li>，不加就无法用 Tab 聚焦、回车也无法触发，
+                 键盘用户将完全用不了暗色模式开关。 */}}
+            <li id="dark-mode-toggle" role="button" tabindex="0" aria-label="{{ T `darkMode` }}">
                 {{ partial "helper/icon" "toggle-left" }}
                 {{ partial "helper/icon" "toggle-right" }}
                 <span>{{ T "darkMode" }}</span>

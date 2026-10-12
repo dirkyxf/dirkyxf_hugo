@@ -3,8 +3,6 @@ title: Blog建立
 description: dirkyxf的blog正式建立
 slug: hello-world
 date: 2026-09-30
-categories:
-  - Blog
 tags:
   - Blog
 weight: 1

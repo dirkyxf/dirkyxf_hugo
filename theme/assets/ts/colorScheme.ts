@@ -27,7 +27,7 @@ class StackColorScheme {
     }
 
     private bindClick(toggleEl: HTMLElement) {
-        toggleEl.addEventListener('click', (e) => {
+        const toggle = () => {
             if (this.isDark()) {
                 /// Disable dark mode
                 this.currentScheme = 'light';
@@ -44,7 +44,18 @@ class StackColorScheme {
             }
 
             this.saveScheme();
-        })
+        };
+
+        toggleEl.addEventListener('click', toggle);
+
+        /// 开关是一个 <li role="button">，不是 <button>，浏览器不会把
+        /// Enter / Space 转成 click，这里手动补上键盘操作。
+        toggleEl.addEventListener('keydown', (e: KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggle();
+            }
+        });
     }
 
     private isDark() {

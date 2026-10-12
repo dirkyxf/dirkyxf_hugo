@@ -18,7 +18,6 @@ SortBy              = "default"
     lastUpdated = ":date_full"
 
 [sidebar]
-    emoji    = "🍥"
     avatar   = "img/avatar.png"
 
 [article]
