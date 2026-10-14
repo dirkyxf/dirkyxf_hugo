@@ -226,7 +226,7 @@ Peekaboo 是用于 macOS 的命令行与菜单栏应用，支持屏幕捕获、�
 
 - Reddit 发帖者：u/company_url_finder
 - 发布时间：2026-10-14 02:19（GMT+8）
-- GitHub 数据：星标：3,187；Fork 数：362；最近发布：`@tanstack/ai-reactor@0.2.13`（2026-10-09）；语言：TypeScript 99.8%；贡献者：145；主要贡献者：Alem Tuzlak（432 次提交）
+- GitHub 数据：星标：3,187；Fork 数：362；最近发布：`@tanstack/ai-reactor` v0.2.13（2026-10-09）；语言：TypeScript 99.8%；贡献者：145；主要贡献者：Alem Tuzlak（432 次提交）
 - GitHub 仓库：[ai](https://github.com/tanstack/ai)
 - Reddit 帖子：[查看帖子](https://www.reddit.com/r/BestGitHubRepos/comments/1x54d2a/tanstack_ai_typesafe_provideragnostic_typescript/)
 
