@@ -10,6 +10,17 @@ import daily_reddit_github_cards as cards
 
 
 class FeedParsingTests(unittest.TestCase):
+    def test_extracts_non_stream_chat_completions_envelope(self):
+        response = '{"choices":[{"message":{"content":"响应内容"}}]}'
+        self.assertEqual(cards.extract_sensenova_content(response, 200, "application/json"), "响应内容")
+
+    def test_parses_sensenova_json_object_items(self):
+        content = '{"items":[{"id":7,"name":"工具","description":"中文简介","emoji":"🛠️"}]}'
+        self.assertEqual(
+            cards.parse_sensenova_summaries(content, {7}),
+            {7: {"name": "工具", "description": "中文简介", "emoji": "🛠️"}},
+        )
+
     def test_parses_repo_author_post_time_and_rss_metrics(self):
         post_html = """<div><h1>What it does</h1><p>一个帮助开发者的工具。</p>
         <a href="https://github.com/acme/awesome-tool">https://github.com/acme/awesome-tool</a>
