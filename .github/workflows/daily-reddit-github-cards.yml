@@ -1,0 +1,47 @@
+name: Daily Reddit GitHub repository cards
+
+on:
+  # GitHub Actions cron is UTC; 02:05 UTC is 10:05 Asia/Shanghai.
+  schedule:
+    - cron: '5 2 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-reddit-github-cards
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      SENSENOVA_API_KEY: ${{ secrets.SENSENOVA_API_KEY }}
+      SENSENOVA_BASE_URL: https://token.sensenova.cn/v1
+      SENSENOVA_MODEL: sensenova-6.8-flash-lite
+      TZ: Asia/Shanghai
+    steps:
+      - name: Check out the blog
+        uses: actions/checkout@v6
+        with:
+          ref: master
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Generate today's cards
+        run: python3 scripts/daily_reddit_github_cards.py --date "$(date +%F)"
+
+      - name: Publish the Hugo article to master
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/post/daily-github-repos/
+          if git diff --cached --quiet; then
+            echo "No new daily article to publish."
+            exit 0
+          fi
+          git commit -m "Publish daily Reddit GitHub cards ($(date +%F))"
+          git push origin HEAD:master
