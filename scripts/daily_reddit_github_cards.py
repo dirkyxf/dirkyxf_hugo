@@ -120,6 +120,15 @@ def github_repo(links: list[str]) -> tuple[str, str] | None:
     return None
 
 
+def is_star_metric_label(label: str) -> bool:
+    normalized = re.sub(r"[^a-z]", "", label.casefold())
+    return normalized in {
+        "star", "stars", "starcount", "starscount",
+        "githubstar", "githubstars", "githubstarcount", "githubstarscount",
+        "stargazer", "stargazers", "stargazercount", "stargazerscount",
+    }
+
+
 def extract_metrics(rows: list[list[str]], title: str) -> list[tuple[str, str]]:
     metrics: list[tuple[str, str]] = []
     in_repo_stats = False
@@ -133,10 +142,10 @@ def extract_metrics(rows: list[list[str]], title: str) -> list[tuple[str, str]]:
             if label.casefold() in {"field", "github", "name", "bio"}:
                 in_repo_stats = False
                 continue
-            if label and value and label.casefold() not in {"metric", "value"}:
-                metrics.append((label, value))
+            if value and is_star_metric_label(label) and not metrics:
+                metrics.append(("Stars", value))
     # The feed title itself sometimes includes the repository's star count.
-    if not any(label.casefold() == "stars" for label, _ in metrics):
+    if not metrics:
         match = re.search(r"\((\d[\d,.]*\s*[kKmM]?)\s+stars?\)", title, re.IGNORECASE)
         if match:
             metrics.insert(0, ("Stars", match.group(1).strip()))
@@ -360,9 +369,8 @@ def render_article(cards: list[tuple[FeedItem, dict[str, str]]]) -> str:
         description = escape_markdown(summary["description"])
         author = escape_markdown(f"u/{item.author}")
         repo_label = escape_markdown(item.repo_slug)
-        metric_text = " · ".join(f"{escape_markdown(label)} {escape_markdown(value)}" for label, value in item.metrics)
-        if not metric_text:
-            metric_text = "RSS 未提供"
+        star_count = next((value.strip() for label, value in item.metrics if is_star_metric_label(label) and value.strip()), None)
+        metric_text = escape_markdown(star_count) if star_count else "RSS 未提供"
         local_time = item.published.astimezone(SHANGHAI).strftime("%Y-%m-%d %H:%M")
         section = [
             f"## {summary['emoji']} {project_name}",
@@ -371,7 +379,7 @@ def render_article(cards: list[tuple[FeedItem, dict[str, str]]]) -> str:
             "",
             f"- Reddit 发帖者：[{author}]({item.author_url})",
             f"- Reddit 发布时间：{local_time}（北京时间）",
-            f"- RSS 中提供的 GitHub 指标：{metric_text}",
+            f"- GitHub Star 数：{metric_text}",
             f"- GitHub 仓库：[{repo_label}]({item.repo_url})",
             f"- Reddit 帖子：[查看原帖]({item.reddit_url})",
         ]
