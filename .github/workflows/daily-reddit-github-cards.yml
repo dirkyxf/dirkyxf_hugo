@@ -1,6 +1,7 @@
 name: Daily Reddit GitHub repository cards
 
 on:
+  workflow_dispatch:
   # GitHub Actions cron is UTC; 02:05 UTC is 10:05 Asia/Shanghai.
   schedule:
     - cron: '5 2 * * *'

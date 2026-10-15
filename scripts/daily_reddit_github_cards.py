@@ -339,7 +339,7 @@ def render_article(cards: list[tuple[FeedItem, dict[str, str]]]) -> str:
 
 
 def write_post(cards: list[tuple[FeedItem, dict[str, str]]], post_date: date, output_root: Path) -> Path:
-    slug = f"github-top-{post_date.isoformat()}"
+    slug = f"best-github-repos-{post_date.isoformat()}"
     post_path = output_root / post_date.isoformat() / "index.md"
     post_path.parent.mkdir(parents=True, exist_ok=True)
     published_at = datetime.combine(post_date, time(10, 5), tzinfo=SHANGHAI).isoformat()
