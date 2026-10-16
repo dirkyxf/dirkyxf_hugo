@@ -338,12 +338,22 @@ def render_article(cards: list[tuple[FeedItem, dict[str, str]]]) -> str:
     return "\n\n━━━━━━\n\n".join(sections) + "\n\n> 内容依据 RSS 帖文整理，未逐项独立核实。\n"
 
 
+def daily_post_path(post_date: date, output_root: Path) -> Path:
+    return (
+        output_root
+        / f"{post_date.year:04d}"
+        / f"{post_date.month:02d}"
+        / f"best-github-repos-{post_date.isoformat()}"
+        / "index.md"
+    )
+
+
 def write_post(cards: list[tuple[FeedItem, dict[str, str]]], post_date: date, output_root: Path) -> Path:
-    slug = f"github-top-{post_date.isoformat()}"
-    post_path = output_root / post_date.isoformat() / "index.md"
+    slug = f"best-github-repos-{post_date.isoformat()}"
+    post_path = daily_post_path(post_date, output_root)
     post_path.parent.mkdir(parents=True, exist_ok=True)
     published_at = datetime.combine(post_date, time(10, 5), tzinfo=SHANGHAI).isoformat()
-    title = f"GitHub 今日热门项目 | {post_date.isoformat()}"
+    title = f"GitHub 每日精选项目（{post_date.isoformat()}）"
     front_matter = (
         "---\n"
         f"title: {json.dumps(title, ensure_ascii=False)}\n"
@@ -360,13 +370,13 @@ def write_post(cards: list[tuple[FeedItem, dict[str, str]]], post_date: date, ou
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--date", required=True, help="文章日期（Asia/Shanghai，YYYY-MM-DD）")
-    parser.add_argument("--output-root", default="content/post/daily-github-repos", help="Hugo 内容目录")
+    parser.add_argument("--output-root", default="content/post", help="Hugo 内容根目录（文章落在 <root>/<年>/<月>/best-github-repos-<日期>/index.md）")
     args = parser.parse_args()
     try:
         post_date = date.fromisoformat(args.date)
     except ValueError:
         parser.error("--date 必须是 YYYY-MM-DD")
-    output_path = Path(args.output_root) / post_date.isoformat() / "index.md"
+    output_path = daily_post_path(post_date, Path(args.output_root))
     if output_path.exists():
         print(f"当天文章已存在，跳过以保持幂等：{output_path}")
         return 0

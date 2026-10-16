@@ -52,9 +52,18 @@ class FeedParsingTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             path = cards.write_post([(item, {"name": "工具", "description": "简介", "emoji": "📦"})], datetime(2026, 10, 15).date(), Path(temp_dir))
             content = path.read_text(encoding="utf-8")
-        self.assertIn('slug: "github-top-2026-10-15"', content)
+        self.assertIn('slug: "best-github-repos-2026-10-15"', content)
         self.assertIn("draft: false", content)
         self.assertIn('date: "2026-10-15T10:05:00+08:00"', content)
+
+    def test_post_lands_in_year_month_best_github_repos_folder(self):
+        item = cards.FeedItem(0, "Example", "https://github.com/acme/tool", "acme/tool", "https://www.reddit.com/r/x/comments/abc", "poster", "https://www.reddit.com/user/poster/", datetime(2026, 10, 15, 1, 0, tzinfo=timezone.utc), [], "summary")
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = cards.write_post([(item, {"name": "工具", "description": "简介", "emoji": "📦"})], datetime(2026, 10, 15).date(), Path(temp_dir))
+        self.assertEqual(
+            path,
+            Path(temp_dir) / "2026" / "10" / "best-github-repos-2026-10-15" / "index.md",
+        )
 
 
 if __name__ == "__main__":
