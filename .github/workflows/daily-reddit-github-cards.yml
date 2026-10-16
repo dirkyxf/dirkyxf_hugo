@@ -1,6 +1,7 @@
 name: Daily Reddit GitHub repository cards
 
 on:
+  workflow_dispatch:
   # GitHub Actions cron is UTC; 02:05 UTC is 10:05 Asia/Shanghai.
   schedule:
     - cron: '5 2 * * *'
@@ -32,7 +33,7 @@ jobs:
           python-version: '3.12'
 
       - name: Generate today's cards
-        run: python3 scripts/daily_reddit_github_cards.py --date "$(date +%F)"
+        run: python3 daily_reddit_github_cards.py --date "$(date +%F)"
 
       - name: Publish the Hugo article to master
         run: |
